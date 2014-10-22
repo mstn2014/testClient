@@ -19,7 +19,7 @@ public class postRequest : MonoBehaviour {
 
     void postMessage()
     {
-        string url = "mstn2014-osaka.herokuapp.com/users/regist";
+        string url = "http://mstn2014-osaka.herokuapp.com/users/regist";
         // ポストするキーはstring型で送る
         Dictionary<string, string> post = new Dictionary<string, string>();
 

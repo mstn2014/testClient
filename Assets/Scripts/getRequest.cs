@@ -53,9 +53,8 @@ public class getRequest : MonoBehaviour
     //--------------------------------------------------------
     void getMessage()
     {
-        string url = "mstn2014-osaka.herokuapp.com/users/score";
+        string url = "http://mstn2014-osaka.herokuapp.com/users/score";
         cm.GET(url, "ReceiveRequest");
-        Debug.Log("GETリクエストを送信しました。");
     }
 
     void ReceiveRequest(WWW www)
