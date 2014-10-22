@@ -6,7 +6,7 @@ using MiniJSON;
 
 public class postRequest : MonoBehaviour {
     WWWClientManager cm;
-    public string ipaddr;
+    //public string ipaddr;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +19,7 @@ public class postRequest : MonoBehaviour {
 
     void postMessage()
     {
-        string url = ipaddr + "/users/regist";
+        string url = "mstn2014-osaka.herokuapp.com/users/regist";
         // ポストするキーはstring型で送る
         Dictionary<string, string> post = new Dictionary<string, string>();
 

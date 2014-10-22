@@ -15,7 +15,7 @@ public class getRequest : MonoBehaviour
 
     WWWClientManager cm;
     List<data> containerList;
-    public string ipaddr;       // インスペクター上で設定すること
+    //public string ipaddr;       // インスペクター上で設定すること
     int startNum = 0;           // ランキングの初期値
     data[] dt;
 
@@ -53,7 +53,7 @@ public class getRequest : MonoBehaviour
     //--------------------------------------------------------
     void getMessage()
     {
-        string url = ipaddr + "/users/score";
+        string url = "mstn2014-osaka.herokuapp.com/users/score";
         cm.GET(url, "ReceiveRequest");
         Debug.Log("GETリクエストを送信しました。");
     }
@@ -77,6 +77,11 @@ public class getRequest : MonoBehaviour
             containerList.Add(data1);
             i++;
         }
+    }
+
+    void ReceiveError()
+    {
+        Debug.Log("GET出来ませんでした。");
     }
 
     //--------------------------------------------------------
