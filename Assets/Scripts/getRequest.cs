@@ -19,7 +19,7 @@ public class getRequest : MonoBehaviour
     int startNum = 0;           // ランキングの初期値
     data[] dt;
 
-    int xpos = 200;
+    int xpos = 50;
 
     // Use this for initialization
     void Start()
