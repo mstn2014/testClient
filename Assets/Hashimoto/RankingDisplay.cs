@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ranking : MonoBehaviour {
+public class RankingDisplay : MonoBehaviour {
 
 	UILabel Rank,Id,Name,Score;
 
@@ -15,10 +15,27 @@ public class Ranking : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Rank.text = "1";
+		/*Rank.text = "1";
 		Id.text = "1893";
 		Name.text = "ABCD";
-		Score.text= "100095";
+		Score.text= "100095";*/
 	}
+
+	public void RankDisplay(string rank){
+		Rank.text = rank;
+	}
+
+	public void IdDisplay(string id){
+		Id.text = id;
+	}
+
+	public void NameDisplay(string name){
+		Name.text = name;
+	}
+
+	public void ScoreDisplay(string score){
+		Score.text = score;
+	}
+
 
 }

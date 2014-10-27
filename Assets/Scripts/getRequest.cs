@@ -21,12 +21,18 @@ public class getRequest : MonoBehaviour
 
     int xpos = 200;
 
+
+    // 追加箇所(橋元)
+    RankingDisplay rk;
+
     // Use this for initialization
     void Start()
     {
         cm = new WWWClientManager(this);
         containerList = new List<data>();
         getMessage();
+
+        rk = new RankingDisplay();
     }
 
     // Update is called once per frame
@@ -98,10 +104,14 @@ public class getRequest : MonoBehaviour
     private void drawsingleline(int pos, data toShow)
     {
         pos++;
-        GUI.Label(new Rect(xpos, pos * 20, 100, 100), (startNum + pos).ToString());
-        GUI.Label(new Rect(xpos + 30, pos * 20, 100, 100), toShow.id.ToString());
-        GUI.Label(new Rect(xpos + 60, pos * 20, 100, 100), toShow.name);
-        GUI.Label(new Rect(xpos + 120, pos * 20, 100, 100), toShow.score.ToString());
+        //GUI.Label(new Rect(xpos, pos * 20, 100, 100), (startNum + pos).ToString());
+        //GUI.Label(new Rect(xpos + 30, pos * 20, 100, 100), toShow.id.ToString());
+        //GUI.Label(new Rect(xpos + 60, pos * 20, 100, 100), toShow.name);
+        //GUI.Label(new Rect(xpos + 120, pos * 20, 100, 100), toShow.score.ToString());
+        rk.RankDisplay((startNum + pos).ToString());
+        rk.IdDisplay(toShow.id.ToString());
+        rk.NameDisplay(toShow.name);
+        rk.ScoreDisplay(toShow.score.ToString());
     }
 
     private void drawTable()
