@@ -4,30 +4,35 @@ using System.Collections.Generic;
 using WWWKit;
 using MiniJSON;
 
-public class getRequest : MonoBehaviour
-{
-    // サーバから受け取るデータ構造
-    public class data : Object
+public class getRequestAndroid : MonoBehaviour {
+
+	    // サーバから受け取るデータ構造
+    public class data_android : Object
     {
         public string name;
         public long id, score;
     }
 
-    WWWClientManager cm;
-    List<data> containerList;
+    private MonoBehaviour mMonoBehaviour;
+
+  	WWWClientManager cm;
+    List<data_android> containerList;
     //public string ipaddr;       // インスペクター上で設定すること
     int startNum = 0;           // ランキングの初期値
-    data[] dt;
+    data_android[] dt;
 
-    int xpos = 50;
+    int xpos = 200;
 
+    RankingManager rm;
 
     // Use this for initialization
     void Start()
     {
         cm = new WWWClientManager(this);
-        containerList = new List<data>();
+        containerList = new List<data_android>();
         getMessage();
+
+        rm = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel").GetComponent<RankingManager>();
     }
 
     // Update is called once per frame
@@ -45,7 +50,7 @@ public class getRequest : MonoBehaviour
         }
 
         int count = (containerList.Count - startNum) > 20 ? 20 : (containerList.Count - startNum);
-        dt = new data[count];
+        dt = new data_android[count];
         containerList.CopyTo(startNum, dt, 0, count);
     }
 
@@ -70,7 +75,7 @@ public class getRequest : MonoBehaviour
             long id = (long)num["id"];
             string name = (string)num["name"];
             long score = (long)num["score"];
-            data data1 = new data();
+            data_android data1 = new data_android();
             data1.id = id;
             data1.name = name;
             data1.score = score;
@@ -89,31 +94,33 @@ public class getRequest : MonoBehaviour
     //--------------------------------------------------------
     void OnGUI()
     {
-        GUI.Label(new Rect(xpos, 0, 100, 100), "rank");
+        /*GUI.Label(new Rect(xpos, 0, 100, 100), "rank");
         GUI.Label(new Rect(xpos + 30, 0, 100, 100), "id");
         GUI.Label(new Rect(xpos + 60, 0, 100, 100), "name");
-        GUI.Label(new Rect(xpos + 120, 0, 100, 100), "score");
+        GUI.Label(new Rect(xpos + 120, 0, 100, 100), "score");*/
         drawTable();
     }
 
-    private void drawsingleline(int pos, data toShow)
+    private void drawsingleline(int pos, data_android toShow)
     {
-        pos++;
+       /* pos++;
         GUI.Label(new Rect(xpos, pos * 20, 100, 100), (startNum + pos).ToString());
         GUI.Label(new Rect(xpos + 30, pos * 20, 100, 100), toShow.id.ToString());
         GUI.Label(new Rect(xpos + 60, pos * 20, 100, 100), toShow.name);
-        GUI.Label(new Rect(xpos + 120, pos * 20, 100, 100), toShow.score.ToString());
+        GUI.Label(new Rect(xpos + 120, pos * 20, 100, 100), toShow.score.ToString());*/
     }
 
     private void drawTable()
     {
-        if (containerList.Count == 0) return;
+       if (containerList.Count == 0) return;
 
         int j = 0;
-        foreach (data thecont in dt)
+        foreach (data_android thecont in dt)
         {
-            drawsingleline(j, thecont);
+            //drawsingleline(j, thecont);
+            rm.SendDataDisp(j,thecont);
             j++;
+            if(j == 10) return;
         }
     }
 }
