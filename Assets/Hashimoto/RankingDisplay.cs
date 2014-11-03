@@ -4,6 +4,18 @@ using System.Collections;
 public class RankingDisplay : MonoBehaviour {
 
 	UILabel Rank,Id,Name,Score;
+	UIPanel Panel;
+	int object_number;
+
+	bool DataSet_flg;
+
+	float move_num;
+
+	getRequestAndroid.data_android data;
+	RankingManager rm;
+
+	float max_line;
+	float base_line;
 
 	// Use this for initialization
 	void Start () {
@@ -11,29 +23,55 @@ public class RankingDisplay : MonoBehaviour {
 		Id	 = this.transform.FindChild("Panel/ID").GetComponent<UILabel> ();
 		Name = this.transform.FindChild("Panel/Name").GetComponent<UILabel> ();
 		Score= this.transform.FindChild("Panel/Score").GetComponent<UILabel> ();
+		Panel=this.transform.FindChild("Panel").GetComponent<UIPanel> ();
+
+		DataSet_flg = false;
+
+		move_num = 0.001f;
+		max_line = 165.0f;
+		base_line= -130.0f;
+
+		if(object_number > 10){
+			Panel.alpha = 0.0f;
+		}
 	}
 	
+
 	// Update is called once per frame
 	void Update () {
-		/*Rank.text = "1";
-		Id.text = "1893";
-		Name.text = "ABCD";
-		Score.text= "100095";*/
+		if(DataSet_flg != true){
+			DataSet_flg = true;
+			rm = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel").GetComponent<RankingManager>();
+			data = rm.DataSend(object_number);
+			RankDataDisplay((object_number+1).ToString(),data.id.ToString(),data.name,data.score.ToString());
+		}
+
+		this.transform.Translate(0.0f,move_num,0.0f);
+		if(this.transform.localPosition.y >= max_line)
+		{
+			if(Panel.alpha >= 0){
+				Panel.alpha  -= 0.01f;
+			}else if(Panel.alpha == 0){
+				// デストロイ
+			}
+
+		}else
+		if(this.transform.localPosition.y >= base_line){
+			if(Panel.alpha >= 0){
+				Panel.alpha  += 0.01f;
+			}
+		}
+
 	}
 
-	public void RankDisplay(string rank){
-		Rank.text = rank;
+	public void Initialize(int num){
+		object_number = num;
 	}
 
-	public void IdDisplay(string id){
+	private void RankDataDisplay(string num, string id, string name, string score){
+		Rank.text = num;
 		Id.text = id;
-	}
-
-	public void NameDisplay(string name){
 		Name.text = name;
-	}
-
-	public void ScoreDisplay(string score){
 		Score.text = score;
 	}
 
