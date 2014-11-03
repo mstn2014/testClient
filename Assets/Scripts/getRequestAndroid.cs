@@ -25,6 +25,8 @@ public class getRequestAndroid : MonoBehaviour {
 
     RankingManager rm;
 
+    bool datasend_flg;
+
     // Use this for initialization
     void Start()
     {
@@ -33,6 +35,8 @@ public class getRequestAndroid : MonoBehaviour {
         getMessage();
 
         rm = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel").GetComponent<RankingManager>();
+        datasend_flg = false;
+
     }
 
     // Update is called once per frame
@@ -82,6 +86,7 @@ public class getRequestAndroid : MonoBehaviour {
             containerList.Add(data1);
             i++;
         }
+        
     }
 
     void ReceiveError()
@@ -98,12 +103,14 @@ public class getRequestAndroid : MonoBehaviour {
         GUI.Label(new Rect(xpos + 30, 0, 100, 100), "id");
         GUI.Label(new Rect(xpos + 60, 0, 100, 100), "name");
         GUI.Label(new Rect(xpos + 120, 0, 100, 100), "score");*/
-        drawTable();
+        if(datasend_flg != true){
+            DataSend();
+        }
     }
 
     private void drawsingleline(int pos, data_android toShow)
     {
-       /* pos++;
+        /*pos++;
         GUI.Label(new Rect(xpos, pos * 20, 100, 100), (startNum + pos).ToString());
         GUI.Label(new Rect(xpos + 30, pos * 20, 100, 100), toShow.id.ToString());
         GUI.Label(new Rect(xpos + 60, pos * 20, 100, 100), toShow.name);
@@ -112,15 +119,26 @@ public class getRequestAndroid : MonoBehaviour {
 
     private void drawTable()
     {
-       if (containerList.Count == 0) return;
+       /*if (containerList.Count == 0) return;
 
         int j = 0;
         foreach (data_android thecont in dt)
         {
-            //drawsingleline(j, thecont);
-            rm.SendDataDisp(j,thecont);
+            drawsingleline(j, thecont);
             j++;
-            if(j == 10) return;
+        }*/
+    }
+
+    public void DataSend()
+    {
+        if (containerList.Count == 0) return;
+
+        int j = 0;
+         foreach (data_android thecont in dt)
+        {
+            rm.DataSet(j, thecont);
+            j++;
+            datasend_flg = true;
         }
     }
 }
