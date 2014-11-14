@@ -16,6 +16,7 @@ public class RankingDisplay : MonoBehaviour {
 
 	float max_line;
 	float base_line;
+	float alpha;
 
 	// Use this for initialization
 	void Start () {
@@ -27,9 +28,11 @@ public class RankingDisplay : MonoBehaviour {
 
 		DataSet_flg = false;
 
-		move_num = 0.001f;
+		move_num = 0.003f;
 		max_line = 95.0f;
 		base_line= -149.0f;
+		alpha = 0.03f;
+
 
 		if(object_number > 9){
 			Panel.alpha = 0.0f;
@@ -50,7 +53,7 @@ public class RankingDisplay : MonoBehaviour {
 		if(this.transform.localPosition.y >= max_line)
 		{
 			if(Panel.alpha >= 0){
-				Panel.alpha  -= 0.01f;
+				Panel.alpha  -= alpha;
 			}else if(Panel.alpha == 0){
 				// デストロイ
 				Destroy(this);
@@ -59,7 +62,7 @@ public class RankingDisplay : MonoBehaviour {
 		}else
 		if(this.transform.localPosition.y >= base_line){
 			if(Panel.alpha >= 0){
-				Panel.alpha  += 0.01f;
+				Panel.alpha  += alpha;
 			}
 		}
 
