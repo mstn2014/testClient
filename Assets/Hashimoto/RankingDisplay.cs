@@ -28,10 +28,10 @@ public class RankingDisplay : MonoBehaviour {
 		DataSet_flg = false;
 
 		move_num = 0.001f;
-		max_line = 165.0f;
-		base_line= -130.0f;
+		max_line = 95.0f;
+		base_line= -149.0f;
 
-		if(object_number > 10){
+		if(object_number > 9){
 			Panel.alpha = 0.0f;
 		}
 	}
@@ -53,6 +53,7 @@ public class RankingDisplay : MonoBehaviour {
 				Panel.alpha  -= 0.01f;
 			}else if(Panel.alpha == 0){
 				// デストロイ
+				Destroy(this);
 			}
 
 		}else

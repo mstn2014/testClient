@@ -19,8 +19,8 @@ public class RankingManager : MonoBehaviour {
 
 		scaleNum = 160;
 		rank_xpos = (float)60.0f;
-		rank_ypos = (float)140.0f;
-		diff = (float)30.0f;
+		rank_ypos = (float)85.0f;
+		diff = (float)25.0f;
 		rank_num = 0;
 		containerList = new List<getRequestAndroid.data_android>();														
 	}
