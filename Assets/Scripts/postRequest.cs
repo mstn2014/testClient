@@ -35,6 +35,7 @@ public class postRequest : MonoBehaviour {
         post.Add("name", nName);
         int score = Random.Range(0,101);        // UnityEngine.Randam.Range(int,int)は第二引数の数字は含まない。この場合0~100になる。
         post.Add("score", score.ToString());
+        post.Add("costume", Random.Range(0, 5).ToString());
         cm.POST(url, post, "ReceivePost");
         Debug.Log(nName.ToString() + " " + score.ToString() + " " + "POSTリクエストを送信しました。");
     }

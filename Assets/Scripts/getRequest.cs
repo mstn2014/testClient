@@ -10,7 +10,7 @@ public class getRequest : MonoBehaviour
     public class data : Object
     {
         public string name;
-        public long id, score;
+        public long id, score,costume;
     }
 
     WWWClientManager cm;
@@ -70,10 +70,12 @@ public class getRequest : MonoBehaviour
             long id = (long)num["id"];
             string name = (string)num["name"];
             long score = (long)num["score"];
+            long costume = (long)num["costume"];
             data data1 = new data();
             data1.id = id;
             data1.name = name;
             data1.score = score;
+            data1.costume = costume;
             containerList.Add(data1);
             i++;
         }
@@ -93,6 +95,7 @@ public class getRequest : MonoBehaviour
         GUI.Label(new Rect(xpos + 30, 0, 100, 100), "id");
         GUI.Label(new Rect(xpos + 60, 0, 100, 100), "name");
         GUI.Label(new Rect(xpos + 120, 0, 100, 100), "score");
+        GUI.Label(new Rect(xpos + 150, 0, 100, 100), "costume");
         drawTable();
     }
 
@@ -103,6 +106,7 @@ public class getRequest : MonoBehaviour
         GUI.Label(new Rect(xpos + 30, pos * 20, 100, 100), toShow.id.ToString());
         GUI.Label(new Rect(xpos + 60, pos * 20, 100, 100), toShow.name);
         GUI.Label(new Rect(xpos + 120, pos * 20, 100, 100), toShow.score.ToString());
+        GUI.Label(new Rect(xpos + 150, pos * 20, 100, 100), toShow.costume.ToString());
     }
 
     private void drawTable()
