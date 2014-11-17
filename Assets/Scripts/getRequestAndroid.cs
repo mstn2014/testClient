@@ -42,7 +42,7 @@ public class getRequestAndroid : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        /*if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             startNum += 20;
             if (startNum > containerList.Count) startNum -= 20;
@@ -53,7 +53,9 @@ public class getRequestAndroid : MonoBehaviour {
             if (startNum < 0) startNum = 0;
         }
 
-        int count = (containerList.Count - startNum) > 20 ? 20 : (containerList.Count - startNum);
+        int count = (containerList.Count - startNum) > 20 ? 20 : (containerList.Count - startNum);*/
+        startNum = 0;
+        int count = containerList.Count;
         dt = new data_android[count];
         containerList.CopyTo(startNum, dt, 0, count);
     }
