@@ -6,11 +6,11 @@ using MiniJSON;
 
 public class getRequestAndroid : MonoBehaviour {
 
-	    // サーバから受け取るデータ構造
+    // サーバから受け取るデータ構造
     public class data_android : Object
     {
         public string name;
-        public long id, score;
+        public long id, score,costume;
     }
 
     private MonoBehaviour mMonoBehaviour;
@@ -81,10 +81,12 @@ public class getRequestAndroid : MonoBehaviour {
             long id = (long)num["id"];
             string name = (string)num["name"];
             long score = (long)num["score"];
+            long costume = (long)num["costume"];
             data_android data1 = new data_android();
             data1.id = id;
             data1.name = name;
             data1.score = score;
+            data1.costume = costume;
             containerList.Add(data1);
             i++;
         }
@@ -104,7 +106,8 @@ public class getRequestAndroid : MonoBehaviour {
         /*GUI.Label(new Rect(xpos, 0, 100, 100), "rank");
         GUI.Label(new Rect(xpos + 30, 0, 100, 100), "id");
         GUI.Label(new Rect(xpos + 60, 0, 100, 100), "name");
-        GUI.Label(new Rect(xpos + 120, 0, 100, 100), "score");*/
+        GUI.Label(new Rect(xpos + 120, 0, 100, 100), "score");
+        GUI.Label(new Rect(xpos + 150, 0, 100, 100), "costume");*/
         if(datasend_flg != true){
             DataSend();
         }
@@ -116,7 +119,8 @@ public class getRequestAndroid : MonoBehaviour {
         GUI.Label(new Rect(xpos, pos * 20, 100, 100), (startNum + pos).ToString());
         GUI.Label(new Rect(xpos + 30, pos * 20, 100, 100), toShow.id.ToString());
         GUI.Label(new Rect(xpos + 60, pos * 20, 100, 100), toShow.name);
-        GUI.Label(new Rect(xpos + 120, pos * 20, 100, 100), toShow.score.ToString());*/
+        GUI.Label(new Rect(xpos + 120, pos * 20, 100, 100), toShow.score.ToString());
+        GUI.Label(new Rect(xpos + 150, pos * 20, 100, 100), toShow.costume.ToString());*/
     }
 
     private void drawTable()

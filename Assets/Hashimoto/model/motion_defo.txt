@@ -1,0 +1,6 @@
+1-60 anim_stand001
+90-150 anim_stand002
+190-220 anim_run001
+250-300 anim_walk001
+330-360 anim_pass001
+390-420 anim_pose001
