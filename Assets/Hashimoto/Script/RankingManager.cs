@@ -7,11 +7,12 @@ public class RankingManager : MonoBehaviour {
 	getRequestAndroid getreq;
 
 	public GameObject prefab;
-	int scaleNum,rank_num;	
+	int scaleNum;	
 	float rank_xpos,rank_ypos,diff;
 	Vector3 BaseLine,MaxLine;
 
-	List<getRequestAndroid.data_android> containerList;
+	static List<getRequestAndroid.data_android> containerList;
+	static int rank_num;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +20,7 @@ public class RankingManager : MonoBehaviour {
 
 		scaleNum = 160;
 		rank_xpos = (float)60.0f;
-		rank_ypos = (float)85.0f;
+		rank_ypos = (float)65.0f;
 		diff = (float)25.0f;
 		rank_num = 0;
 		containerList = new List<getRequestAndroid.data_android>();														
@@ -52,10 +53,18 @@ public class RankingManager : MonoBehaviour {
 	}
 
 	public void ChangeScene(int num){
-		print(rank_num);
 		if((rank_num-1) == num){
+			rank_num-=1;
 			Application.LoadLevel("RankingAvatarTown");
 		}
+	}
+
+	public static int getDataNum(){
+		return	rank_num;
+	}
+
+	public static getRequestAndroid.data_android getData(int num){
+		return containerList[num];
 	}
 
 }

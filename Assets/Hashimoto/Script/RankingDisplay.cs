@@ -29,7 +29,7 @@ public class RankingDisplay : MonoBehaviour {
 		DataSet_flg = false;
 
 		move_num = 0.003f;
-		max_line = 95.0f;
+		max_line = 75.0f;
 		base_line= -149.0f;
 		alpha = 0.03f;
 
@@ -53,8 +53,7 @@ public class RankingDisplay : MonoBehaviour {
 		if(this.transform.localPosition.y >= max_line)
 		{
 			if(Panel.alpha >= 0){
-				Panel.alpha  -= alpha;
-				//Debug.Log(Panel.alpha);
+				Panel.alpha  -= (alpha+0.02f);
 			}
 			if(Panel.alpha <= alpha){
 				// デストロイ
