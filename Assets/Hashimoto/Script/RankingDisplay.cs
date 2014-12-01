@@ -9,66 +9,58 @@ public class RankingDisplay : MonoBehaviour {
 
 	bool DataSet_flg;
 
-	float move_num;
-
 	getRequestAndroid.data_android data;
 	RankingManager rm;
+	RankingData m_RankData;
 
-	float max_line;
-	float base_line;
-	float alpha;
+	// 定数呼び出し
+	RankingSetting	RANKING; 
 
 	// Use this for initialization
-	void Start () {
+	IEnumerator Start () {
+		RANKING = Resources.Load<RankingSetting> ("Setting/RankingSetting");
+
 		Rank = this.transform.FindChild("Panel/Rank").GetComponent<UILabel> ();
 		Id	 = this.transform.FindChild("Panel/ID").GetComponent<UILabel> ();
 		Name = this.transform.FindChild("Panel/Name").GetComponent<UILabel> ();
 		Score= this.transform.FindChild("Panel/Score").GetComponent<UILabel> ();
 		Panel=this.transform.FindChild("Panel").GetComponent<UIPanel> ();
 
-		DataSet_flg = false;
+		GameObject obj = GameObject.Find ("RankingData");
+		m_RankData = obj.GetComponent<RankingData>();
 
-		move_num = 0.003f;
-		max_line = 75.0f;
-		base_line= -149.0f;
-		alpha = 0.03f;
+		rm = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel").GetComponent<RankingManager>();
+		data = m_RankData.getRankData(object_number);
+		RankDataDisplay((object_number+1).ToString(),data.id.ToString(),data.name,data.score.ToString());
 
+		Panel.alpha = 0.0f;
 
-		if(object_number > 9){
-			Panel.alpha = 0.0f;
-		}
+		yield return new WaitForSeconds (5f);
+		rm.StartMove (object_number);
 	}
 	
 
 	// Update is called once per frame
 	void Update () {
-		if(DataSet_flg != true){
-			DataSet_flg = true;
-			rm = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel").GetComponent<RankingManager>();
-			data = rm.DataSend(object_number);
-			RankDataDisplay((object_number+1).ToString(),data.id.ToString(),data.name,data.score.ToString());
+		bool move_flg = rm.IsMove;
+		if(move_flg){
+			this.transform.Translate (0.0f, RANKING.MoveScroll, 0.0f);
+			if (this.transform.localPosition.y >= RANKING.HideLine) {
+				if (Panel.alpha > 0f) {
+					Panel.alpha -= RANKING.HideAlpha;
+				}
+				if (Panel.alpha <= 0f) {
+					// デストロイ
+					Destroy (gameObject);
+					rm.ChangeScene (object_number);	
+				}
+			} else if (this.transform.localPosition.y >= RANKING.DispLine) {
+				if (Panel.alpha < 1f) {
+					Panel.alpha += RANKING.DispAlpha;
+				}
+			}
+			
 		}
-
-		this.transform.Translate(0.0f,move_num,0.0f);
-		if(this.transform.localPosition.y >= max_line)
-		{
-			if(Panel.alpha >= 0){
-				Panel.alpha  -= (alpha+0.02f);
-			}
-			if(Panel.alpha <= alpha){
-				// デストロイ
-				Destroy(this);
-				rm.ChangeScene(object_number);
-				
-			}
-
-		}else
-		if(this.transform.localPosition.y >= base_line){
-			if(Panel.alpha >= 0){
-				Panel.alpha  += alpha;
-			}
-		}
-
 	}
 
 	public void Initialize(int num){
@@ -81,6 +73,4 @@ public class RankingDisplay : MonoBehaviour {
 		Name.text = name;
 		Score.text = score;
 	}
-
-
 }

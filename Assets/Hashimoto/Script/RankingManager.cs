@@ -5,66 +5,76 @@ using System.Collections.Generic;
 public class RankingManager : MonoBehaviour {
 
 	getRequestAndroid getreq;
+	RankingData m_RankData;
 
-	public GameObject prefab;
-	int scaleNum;	
-	float rank_xpos,rank_ypos,diff;
+	bool	m_move_flg;
+	public GameObject ranker;
+	public GameObject higerranker;
+	Vector3 scaleNum;
+	int		m_rankPosY;
 	Vector3 BaseLine,MaxLine;
 
-	static List<getRequestAndroid.data_android> containerList;
-	static int rank_num;
+	// 定数呼び出し
+	RankingSetting	RANKING; 
 
+	public bool IsMove{
+		get{return m_move_flg;}
+		set{m_move_flg = value;}
+	}
 	// Use this for initialization
 	void Start () {
-		getreq = GameObject.Find("/getRequestObject").GetComponent<getRequestAndroid>();
+		RANKING = Resources.Load<RankingSetting> ("Setting/RankingSetting");
 
-		scaleNum = 160;
-		rank_xpos = (float)60.0f;
-		rank_ypos = (float)65.0f;
-		diff = (float)25.0f;
-		rank_num = 0;
-		containerList = new List<getRequestAndroid.data_android>();														
+		getreq = GameObject.Find("/getRequestObject").GetComponent<getRequestAndroid>();
+		GameObject obj = GameObject.Find ("RankingData");
+		m_RankData = obj.GetComponent<RankingData>();
+
+		m_rankPosY = RANKING.MoziInitPosY;
+		scaleNum = new Vector3(RANKING.MoziScall,RANKING.MoziScall,RANKING.MoziScall);	
+		m_move_flg = false;
+	}
+
+	// Update is called once per frame
+	void Update () {}
+
+	// ランキング追加
+	public void DataSet(int num,getRequestAndroid.data_android toShow){
+		m_RankData.AddRanking (toShow);
+
+		int rankNum = m_RankData.IsRankingNum;
+		RankingObjectGeneration(toShow,rankNum);
+		m_RankData.IsRankingNum = ++num;
+	}
+
+	// ランキング表示用の名前生成.
+	private void RankingObjectGeneration(getRequestAndroid.data_android toShow,int num){
+		GameObject ranking;
+		if (num < 10) {
+			ranking = (GameObject)GameObject.Instantiate (higerranker, this.transform.position, this.transform.rotation);
+			ranking.GetComponent<HigherRankDisplay> ().Initialize (num);
+		} else {
+			ranking = (GameObject)GameObject.Instantiate (ranker, this.transform.position, this.transform.rotation);
+			ranking.GetComponent<RankingDisplay> ().Initialize (num);
+		}
+		ranking.transform.parent = this.transform;
+		ranking.transform.localScale = scaleNum;
+		ranking.transform.localPosition = new Vector3(RANKING.MoziInitPosX,m_rankPosY,(float)0.0f);
+		m_rankPosY = m_rankPosY - RANKING.MoziInterval;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-
-	}
-
-	public void DataSet(int num,getRequestAndroid.data_android toShow){
-		containerList.Add(toShow);
-
-		RankingObjectGeneration(toShow,rank_num);
-		rank_num++;
-	}
-
-
-	private void RankingObjectGeneration(getRequestAndroid.data_android toShow,int num){
-		GameObject ranking = (GameObject)GameObject.Instantiate(prefab, this.transform.position, this.transform.rotation );
-		ranking.transform.parent = this.transform;
-		ranking.transform.localScale = new Vector3(scaleNum,scaleNum,scaleNum);
-		ranking.transform.localPosition = new Vector3(rank_xpos,rank_ypos,(float)0.0f);
-		rank_ypos = rank_ypos - diff;
-		ranking.GetComponent<RankingDisplay>().Initialize(num);
-	}
-
-	public getRequestAndroid.data_android DataSend(int num){
-		return containerList[num];
-	}
-
 	public void ChangeScene(int num){
+		int rank_num = m_RankData.IsRankingNum;
 		if((rank_num-1) == num){
-			rank_num-=1;
 			Application.LoadLevel("RankingAvatarTown");
 		}
 	}
 
-	public static int getDataNum(){
-		return	rank_num;
-	}
 
-	public static getRequestAndroid.data_android getData(int num){
-		return containerList[num];
+	public void StartMove(int num){
+		int rank_num = m_RankData.IsRankingNum;
+		if((rank_num-1) == num){
+			m_move_flg = true;
+		}
 	}
 
 }

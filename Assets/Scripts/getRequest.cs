@@ -79,6 +79,7 @@ public class getRequest : MonoBehaviour
             containerList.Add(data1);
             i++;
         }
+		Debug.Log("GET出来ました。");
     }
 
     void ReceiveError()

@@ -19,14 +19,6 @@ public class TownCountDown : MonoBehaviour {
 	void Start () {
 		countdown_number = 10.0f;
 		timeLabel = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel/Label").GetComponent<UILabel>();
-
-		/********** 前シーンからデータ取得 ***********/
-		DataList = new List<getRequestAndroid.data_android>();
-		rank_num = RankingManager.getDataNum();
-		for(int num = rank_num ; num >= 0 ; num--){
-			DataList.Add(RankingManager.getData((rank_num - num)));
-		}
-		/****************************************/
 	}
 	
 	// Update is called once per frame
@@ -37,6 +29,9 @@ public class TownCountDown : MonoBehaviour {
 		if(countdown_number <= 0.0f){
 			timeLabel.text = "END";
 			Application.LoadLevel("RankingAndroid");
+
+			GameObject obj = GameObject.Find("RankingData");
+			Destroy(obj);
 		}
 	}
 

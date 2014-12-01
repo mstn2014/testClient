@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using WWWKit;
 using MiniJSON;
 
+
+
+
 public class getRequestAndroid : MonoBehaviour {
-
-    // サーバから受け取るデータ構造
-    public class data_android : Object
-    {
-        public string name;
-        public long id, score,costume;
-    }
-
+	// サーバから受け取るデータ構造
+	public class data_android : Object
+	{
+		public string name;
+		public long id, score,costume;
+	}
+    
     private MonoBehaviour mMonoBehaviour;
 
   	WWWClientManager cm;
@@ -108,9 +110,9 @@ public class getRequestAndroid : MonoBehaviour {
         GUI.Label(new Rect(xpos + 60, 0, 100, 100), "name");
         GUI.Label(new Rect(xpos + 120, 0, 100, 100), "score");
         GUI.Label(new Rect(xpos + 150, 0, 100, 100), "costume");*/
-        if(datasend_flg != true){
-            DataSend();
-        }
+        if (datasend_flg != true) {
+			DataSend ();
+		}
     }
 
     private void drawsingleline(int pos, data_android toShow)
