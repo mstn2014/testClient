@@ -20,4 +20,14 @@ public class RankingSetting : ScriptableObject {
 	public float	MoveMent_Time;
 	public float	MoveMent_Alpha;
 
+	[Header("町関係")]
+	public float	SCROLL_SECOND;	// スクロールする時間
+	public int		ANIMETION_NUM;	// アニメーション数
+	public int		BLOCK_NUM;		// ステージ分割数(生成場所で密度が極端にならないように)
+	public int		MODEL_NUM;		// 生成するモデルの数
+	public float	MODELPOS_Y;		// モデルのY座標
+	public float	RANKSCALL;		// ラベルのサイズ
+	public float	RANKPOS_COM;	// ラベルの座標補正
+	public int		MIN_ANIM_SECOND;// 最低アニメーション時間
+	public int		MAX_ANIM_SECOND;// 最高アニメーション時間
 }

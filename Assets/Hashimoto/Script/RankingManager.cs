@@ -40,10 +40,11 @@ public class RankingManager : MonoBehaviour {
 	// ランキング追加
 	public void DataSet(int num,getRequestAndroid.data_android toShow){
 		m_RankData.AddRanking (toShow);
-
 		int rankNum = m_RankData.IsRankingNum;
+
 		RankingObjectGeneration(toShow,rankNum);
 		m_RankData.IsRankingNum = ++num;
+		m_RankData.AddRankingNum (m_RankData.IsRankingNum);
 	}
 
 	// ランキング表示用の名前生成.
@@ -65,6 +66,7 @@ public class RankingManager : MonoBehaviour {
 	public void ChangeScene(int num){
 		int rank_num = m_RankData.IsRankingNum;
 		if((rank_num-1) == num){
+
 			Application.LoadLevel("RankingAvatarTown");
 		}
 	}
