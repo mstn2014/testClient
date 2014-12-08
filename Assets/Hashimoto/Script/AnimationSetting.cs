@@ -62,17 +62,8 @@ public class AnimationSetting : MonoBehaviour {
 
 
 			work_model = Instantiate (m_model) as GameObject;		// モデルとランク表示の生成
-			work_rank = NGUITools.AddChild(m_panel, m_Rank);
+			//work_rank = NGUITools.AddChild(m_panel, m_Rank);
 
-			////////// モデルの基本設定 //////////
-			/*	ラベル関連移動
-			label = work_model.transform.FindChild ("Panel").gameObject.transform.FindChild ("Rank").gameObject;
-			label.transform.localEulerAngles = labelSlope;
-			work_label = label.GetComponent<UILabel> ();
-
-			work_label.text = disp_num.ToString () + "位" + work_box.name;
-// ラベルの座標と文字を決める.gameobjectにラベルのobjを渡して個人個人に管理してもらう
-			*/
 			////// モデルの設定 //////
 			// 配置する座標を決める
 			work_pos = work_model.transform.localPosition;
@@ -94,6 +85,8 @@ public class AnimationSetting : MonoBehaviour {
 			*/
 			// 座標.スクリプト
 			////// ラベルの設定 //////
+
+			/*
 			// 深度に合わせて大きさを変える
 			work_rank.transform.localScale = new Vector3(RANKING.RANKSCALL+(RANKING.RANKSCALL*(end_farZ.z-work_pos.z)/ length.y),RANKING.RANKSCALL+(RANKING.RANKSCALL*(end_farZ.z-work_pos.z)/ length.y),RANKING.RANKSCALL+(RANKING.RANKSCALL*(end_farZ.z-work_pos.z)/ length.y));
 			// 座標
@@ -103,11 +96,13 @@ public class AnimationSetting : MonoBehaviour {
 			work_rank.transform.localPosition = new Vector3(work_pos2.x*1280-1280/2, work_pos2.y*800-880/2+(RANKING.RANKPOS_COM*(work_pos.z-start_nearZ.z)/ length.y), work_pos2.z);
 			// 順位
 			work_label = work_rank.transform.FindChild("Label").gameObject.GetComponent<UILabel>() as UILabel;
-			work_label.text = disp_num.ToString () + "位" + work_box.name;
+			work_label.text = disp_num.ToString () + "位 " + work_box.name;
 
 			rankScript = work_rank.GetComponent<Rank>();
+			*/
 			// スクリプトの起動
-			rankScript.Init(work_model, start_nearZ, end_farZ, length);
+			modelScript.Init(start_nearZ, end_farZ, length);
+			//rankScript.Init(work_model, start_nearZ, end_farZ, length);
 
 
 			// モデルとラベルのgameobjectを交換

@@ -72,7 +72,7 @@ public class HigherRankDisplay : MonoBehaviour {
 			Panel.alpha += RANKING.MoveMent_Alpha;
 			yield return null;
 		}
-		yield return new WaitForSeconds (5f);
+		yield return new WaitForSeconds (3f);
 		rm.StartMove (object_number);
 	}
 
