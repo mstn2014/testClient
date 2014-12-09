@@ -16,7 +16,7 @@ public class RankingSetting : ScriptableObject {
 	public int		MoziInitPosY;
 	public int		MoziInterval;
 
-	public float	MoveMent_X;
+	public float	MoveMent_X;		// 出演時アニメーション関係
 	public float	MoveMent_Time;
 	public float	MoveMent_Alpha;
 

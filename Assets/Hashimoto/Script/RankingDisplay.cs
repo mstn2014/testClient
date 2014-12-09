@@ -3,7 +3,7 @@ using System.Collections;
 
 public class RankingDisplay : MonoBehaviour {
 
-	UILabel Rank,Id,Name,Score;
+	UILabel Rank,Name,Score;
 	UIPanel Panel;
 	int object_number;
 
@@ -21,7 +21,6 @@ public class RankingDisplay : MonoBehaviour {
 		RANKING = Resources.Load<RankingSetting> ("Setting/RankingSetting");
 
 		Rank = this.transform.FindChild("Panel/Rank").GetComponent<UILabel> ();
-		Id	 = this.transform.FindChild("Panel/ID").GetComponent<UILabel> ();
 		Name = this.transform.FindChild("Panel/Name").GetComponent<UILabel> ();
 		Score= this.transform.FindChild("Panel/Score").GetComponent<UILabel> ();
 		Panel=this.transform.FindChild("Panel").GetComponent<UIPanel> ();
@@ -69,7 +68,6 @@ public class RankingDisplay : MonoBehaviour {
 
 	private void RankDataDisplay(string num, string id, string name, string score){
 		Rank.text = num;
-		Id.text = id;
 		Name.text = name;
 		Score.text = score;
 	}

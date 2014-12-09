@@ -2,12 +2,13 @@
 using System.Collections;
 
 public class Model : MonoBehaviour {
-	enum MODEL_STATE{set, active};
+	enum MODEL_STATE{set, stand, walk, dance};
 	private MODEL_STATE m_state;
 
 	private Animator	m_anim;
 	private NavMeshAgent m_navi;
 	private int			m_animCount, m_nowCount;
+	private AnimatorStateInfo	m_animState;	// モデルのステータス
 
 	private Vector3 start_nearZ, end_farZ;
 	private Vector2	length;
@@ -26,18 +27,16 @@ public class Model : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/*
-			行動の変更の確認
-		 */
 		if (StartUp_flg) {
 			switch (m_state) {
-			case MODEL_STATE.set:
-				m_anim.Play ("player_stand001");
-
-				int action = Random.Range(0, 11);
+			case 0:
+				int action = Random.Range(0, 10);
 				switch(action){
 				case 1:		// 立ち
-					m_state = MODEL_STATE.active;
+					m_animCount = Random.Range (RANKING.MIN_ANIM_SECOND, RANKING.MAX_ANIM_SECOND);
+					m_animCount *= 60;	// 大体60fps
+					m_anim.SetInteger("DanceType",0);
+					m_state = MODEL_STATE.stand;
 					break;
 				case 2:		// 歩き
 				case 3:
@@ -51,7 +50,7 @@ public class Model : MonoBehaviour {
 
 					// 乱数で移動距離産出
 					move_x = Random.Range(RANKING.MIN_MOVERANGE, RANKING.MAX_MOVERANGE);
-					move_z = Random.Range(0, length.y);
+					move_z = Random.Range(0f, (length.y/2f));
 					// マイナス?プラス?
 					if(0==Random.Range(0,2)){
 						move_x *= -1;
@@ -68,35 +67,22 @@ public class Model : MonoBehaviour {
 					}
 					move_point.x += move_x;
 					move_point.z += move_z;
-					//move_point.x += 1;
-					//move_point.z -= 1;
 					m_navi.SetDestination(move_point);
-					m_anim.Play ("player_walk");
-					m_state = MODEL_STATE.active;
+
+					m_animCount = Random.Range (RANKING.MIN_ANIM_SECOND, RANKING.MAX_ANIM_SECOND);
+					m_animCount *= 60;	// 大体60fps
+					m_anim.SetInteger("DanceType",1);
+					m_state = MODEL_STATE.walk;
 					break;
 
 				case 5:		// ダンス
 				case 6:
-					action = Random.Range(0,5);
-					switch(action){
-					case 0:
-						m_anim.Play ("player_bonodori");	// 盆踊り
-						break;
-					case 1:
-						m_anim.Play ("player_fla");			// フラミング
-						break;
-					case 2:
-						m_anim.Play ("player_hula");		// フラメンコ
-						break;
-					case 3:
-						m_anim.Play ("player_belly");		// ベリー
-						break;
-					case 4:
-						m_anim.Play ("player_samba");		// サンバ
-						break;
+					action = Random.Range(2,7);
+					m_anim.SetInteger("DanceType", action);
+					m_anim.SetTrigger("nowDance");
 
-					}
-					m_state = MODEL_STATE.active;
+
+					m_state = MODEL_STATE.dance;
 					break;
 
 				case 7:		// 特殊1: 相手を見つけて合言葉&ポーズ
@@ -106,7 +92,7 @@ public class Model : MonoBehaviour {
 					// アニメーション開始
 					break;
 				case 9:		// 特殊2: みんなでダンス
-				case 10:
+				case 0:
 					// 判定 相手を見つける範囲攻撃
 					// 整列
 					// ダンスを決める
@@ -115,30 +101,36 @@ public class Model : MonoBehaviour {
 
 					break;
 				}
-				m_animCount = Random.Range (RANKING.MIN_ANIM_SECOND, RANKING.MAX_ANIM_SECOND);
-				m_animCount *= 60;	// 大体60fps
 			break;
 
-			case MODEL_STATE.active:
+			case MODEL_STATE.stand:
+				m_nowCount++;
+				if(m_nowCount > m_animCount){
+					m_nowCount = 0;
+					m_anim.SetInteger("DanceType",7);
+					m_state = MODEL_STATE.set;
+				}
+				break;
 
+			case MODEL_STATE.walk:
+				m_nowCount++;
+				if(m_nowCount > m_animCount){
+					m_navi.Stop();
+					m_nowCount = 0;
+					m_anim.SetInteger("DanceType",7);
+					m_state = MODEL_STATE.set;
+				}
+				break;
+
+			case MODEL_STATE.dance:
+				// モデルのステータスを取得
+				m_animState = m_anim.GetCurrentAnimatorStateInfo(0);		// ダンスの切り替え
+				if(m_animState.nameHash == Animator.StringToHash("Base Layer.EndCheck")){
+					m_anim.SetInteger("DanceType",7);
+					m_state = MODEL_STATE.set;
+				}
 				break;
 			}
-			// カウント
-			m_nowCount ++;
-			if (m_nowCount >= m_animCount) {
-				m_navi.Stop();
-				m_nowCount = 0;
-				m_state = MODEL_STATE.set;
-			}
-					/*
-	 * アニメーションの変更処理
-	 * 歩き.走り.踊り
-	 * 特殊
-	 * 踊り.合言葉
-	 * 
-	 * 対象を発見	コントタクトをとる
-	 * 対象に自分のgameobjectと
-	 */
 		}
 	}
 

@@ -8,8 +8,8 @@ public class RankingManager : MonoBehaviour {
 	RankingData m_RankData;
 
 	bool	m_move_flg;
-	public GameObject ranker;
-	public GameObject higerranker;
+	private GameObject ranker;
+	private GameObject higerranker;
 	Vector3 scaleNum;
 	int		m_rankPosY;
 	Vector3 BaseLine,MaxLine;
@@ -24,7 +24,8 @@ public class RankingManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		RANKING = Resources.Load<RankingSetting> ("Setting/RankingSetting");
-
+		ranker = Resources.Load ("Prefab/Ranking") as GameObject;
+		higerranker = Resources.Load ("Prefab/HigerRanking") as GameObject;
 		getreq = GameObject.Find("/getRequestObject").GetComponent<getRequestAndroid>();
 		GameObject obj = GameObject.Find ("RankingData");
 		m_RankData = obj.GetComponent<RankingData>();

@@ -41,7 +41,6 @@ public class AnimationSetting : MonoBehaviour {
 		UILabel work_label;
 		Camera	camera;
 		Model	modelScript;
-		Rank	rankScript;
 
 		length.x = (end_farZ.x - start_nearZ.x);	// 幅(横)
 		length.y = (end_farZ.z - start_nearZ.z);	// 幅(縦)
@@ -86,23 +85,8 @@ public class AnimationSetting : MonoBehaviour {
 			// 座標.スクリプト
 			////// ラベルの設定 //////
 
-			/*
-			// 深度に合わせて大きさを変える
-			work_rank.transform.localScale = new Vector3(RANKING.RANKSCALL+(RANKING.RANKSCALL*(end_farZ.z-work_pos.z)/ length.y),RANKING.RANKSCALL+(RANKING.RANKSCALL*(end_farZ.z-work_pos.z)/ length.y),RANKING.RANKSCALL+(RANKING.RANKSCALL*(end_farZ.z-work_pos.z)/ length.y));
-			// 座標
-			work_pos2 = work_model.transform.FindChild("LabelPos").transform.position;
-			work_pos2 = camera.WorldToViewportPoint(work_pos2);
-			// 深度に合わせて高さを微調整
-			work_rank.transform.localPosition = new Vector3(work_pos2.x*1280-1280/2, work_pos2.y*800-880/2+(RANKING.RANKPOS_COM*(work_pos.z-start_nearZ.z)/ length.y), work_pos2.z);
-			// 順位
-			work_label = work_rank.transform.FindChild("Label").gameObject.GetComponent<UILabel>() as UILabel;
-			work_label.text = disp_num.ToString () + "位 " + work_box.name;
-
-			rankScript = work_rank.GetComponent<Rank>();
-			*/
 			// スクリプトの起動
 			modelScript.Init(start_nearZ, end_farZ, length);
-			//rankScript.Init(work_model, start_nearZ, end_farZ, length);
 
 
 			// モデルとラベルのgameobjectを交換

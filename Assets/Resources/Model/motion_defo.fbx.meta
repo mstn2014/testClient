@@ -761,12 +761,12 @@ ModelImporter:
       takeName: 
       firstFrame: 2020
       lastFrame: 2380
-      wrapMode: 2
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
-      loop: 1
-      loopTime: 1
+      loop: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

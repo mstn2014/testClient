@@ -20,11 +20,15 @@ public class Rank_ver2 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// lookatでカメラのほうを見るようにする
+		/*
 		m_camera = Camera.main;
-		Vector3 look_at = (m_camera.transform.position - m_bg.transform.position);
+		//Vector3 look_at = (m_camera.transform.position);
+		Vector3 look_at = m_camera.transform.position;
+		*/
 
-		//Vector3 look_at =  new Vector3(-m_camera.transform.position.x + m_bg.transform.position.x,-m_camera.transform.position.y + m_bg.transform.position.y,m_bg.transform.position.z);//Vector3 look_at = (m_camera.transform.position - transform.position);
-		m_bg.transform.LookAt(look_at);
+		//transform.LookAt(look_at);
+
+		transform.forward = m_camera.transform.forward;
 	}
 
 
