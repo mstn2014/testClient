@@ -31,4 +31,5 @@ public class RankingSetting : ScriptableObject {
 	public int		MAX_ANIM_SECOND;// 最高アニメーション時間
 	public float	MIN_MOVERANGE;	// モデルの最小移動距離
 	public float	MAX_MOVERANGE;	// モデルの最大移動距離
+	public int		WAITTIME;		// アニメーション切り替えのための待ち時間
 }
