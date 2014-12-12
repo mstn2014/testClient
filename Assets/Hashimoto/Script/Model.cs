@@ -187,7 +187,6 @@ public class Model : MonoBehaviour {
 				poscheck.x =  Mathf.Abs(poscheck.x);
 				poscheck.z =  Mathf.Abs(poscheck.z);
 				if(poscheck.x < 3 && poscheck.z < 3){
-					Debug.Log("いい距離");
 					m_navi.Stop();				// 移動の終了
 					m_friendScript.NavStop();
 					m_friendScript.AnimChenge(8);// アニメーションの変更
@@ -199,7 +198,6 @@ public class Model : MonoBehaviour {
 				// モデルのステータスを取得
 				m_animState = m_anim.GetCurrentAnimatorStateInfo(0);		// ダンスの切り替え
 				if(m_animState.nameHash == Animator.StringToHash("Base Layer.EndCheck")){
-					Debug.Log("ポーズ終了");
 					m_anim.SetTrigger("EndCheck");
 					ActInit();
 					m_friendScript.ActInit();

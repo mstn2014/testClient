@@ -30,7 +30,7 @@ public class RankingDisplay : MonoBehaviour {
 
 		rm = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel").GetComponent<RankingManager>();
 		data = m_RankData.getRankData(object_number);
-		RankDataDisplay((object_number+1).ToString(),data.id.ToString(),data.name,data.score.ToString());
+		RankDataDisplay((object_number+1).ToString(),data.name,data.score.ToString());
 
 		Panel.alpha = 0.0f;
 
@@ -66,7 +66,7 @@ public class RankingDisplay : MonoBehaviour {
 		object_number = num;
 	}
 
-	private void RankDataDisplay(string num, string id, string name, string score){
+	private void RankDataDisplay(string num, string name, string score){
 		Rank.text = num;
 		Name.text = name;
 		Score.text = score;

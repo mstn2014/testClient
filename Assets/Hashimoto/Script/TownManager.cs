@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TownManager : MonoBehaviour {
 	
@@ -34,19 +35,6 @@ public class TownManager : MonoBehaviour {
 
 		// モデルの生成
 		m_setAnim.SetAnimation (m_startPos_nearZ, m_endPos_farZ);
-		/*
-			モデルの生成と設定
-			モデルのシチュエーションを決めるスクリプト作成
-			(アニメーションの設定は用意したやつから行うものによっては多人数で行う)
-		 */
-
-		/* モデルの配置
-			カメラを地面の始点へ			ok
-			シーン切り替えは（終点ー始点＝距離）	ok?
-			// 手前と奥を設定したら配置も楽？
-			終点についたらシーン切り替え
-
-		*/
 	}
 	
 	// Update is called once per frame

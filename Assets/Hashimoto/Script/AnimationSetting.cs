@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AnimationSetting : MonoBehaviour {
 
@@ -8,6 +9,7 @@ public class AnimationSetting : MonoBehaviour {
 	private GameObject	m_panel;
 	private RankingData	m_RankData;
 
+	private List<GameObject>	ModelS;	// 生成するモデルを格納するためのリスト
 	// 定数呼び出し
 	RankingSetting	RANKING; 
 	
@@ -27,6 +29,19 @@ public class AnimationSetting : MonoBehaviour {
 	public void SetAnimation(Vector3 start_nearZ, Vector3 end_farZ){
 		RANKING = Resources.Load<RankingSetting> ("Setting/RankingSetting");
 		m_model = Resources.Load ("Model/RankModel") as GameObject;
+		// 生成するモデルの読み込み
+		ModelS = new List<GameObject>();
+		ModelS.Add (Resources.Load("Model/RankModel0") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel1") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel2") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel3") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel4") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel5") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel6") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel7") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel8") as GameObject);
+		ModelS.Add (Resources.Load("Model/RankModel9") as GameObject);
+
 		m_Rank = Resources.Load ("Prefab/Rank") as GameObject;
 		m_panel = GameObject.Find ("Panel");
 		GameObject obj = GameObject.Find ("RankingData");
@@ -60,8 +75,8 @@ public class AnimationSetting : MonoBehaviour {
 			m_RankData.IsRankingNum = (rank_num-1);					// 消した分の添え字を下げる
 
 
-			work_model = Instantiate (m_model) as GameObject;		// モデルとランク表示の生成
-			//work_rank = NGUITools.AddChild(m_panel, m_Rank);
+			//work_model = Instantiate (m_model) as GameObject;		// モデルとランク表示の生成
+			work_model = Instantiate (ModelS[(int)work_box.costume]) as GameObject;	// モデルとランク表示の生成
 
 			////// モデルの設定 //////
 			// 配置する座標を決める
@@ -79,17 +94,10 @@ public class AnimationSetting : MonoBehaviour {
 			work_model.transform.position = work_pos;
 
 			modelScript = work_model.GetComponent<Model>();
-			/*
-				ToDo:衣装を変えたり
-			*/
-			// 座標.スクリプト
-			////// ラベルの設定 //////
 
 			// スクリプトの起動
 			modelScript.Init(start_nearZ, end_farZ, length);
 
-
-			// モデルとラベルのgameobjectを交換
 		}
 	}
 
