@@ -19,7 +19,7 @@ public class TownCountDown : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		countdown_number = 10.0f;
-		timeLabel = GameObject.Find("/UI Root (2D)/Anchor/Camera/Panel/Label").GetComponent<UILabel>();
+		timeLabel = GameObject.Find("Timer").GetComponent<UILabel>();
 
 		nowtime = 0;
 	}
