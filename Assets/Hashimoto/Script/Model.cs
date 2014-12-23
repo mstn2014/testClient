@@ -51,6 +51,7 @@ public class Model : MonoBehaviour {
 				}
 				int action = Random.Range(0, 10);
 				switch(action){
+				case 0:
 				case 1:		// 立ち
 					m_animCount = Random.Range (RANKING.MIN_ANIM_SECOND, RANKING.MAX_ANIM_SECOND);
 					m_animCount *= 60;	// 大体60fps
@@ -93,19 +94,20 @@ public class Model : MonoBehaviour {
 					m_anim.SetInteger("DanceType",1);
 					m_state = MODEL_STATE.walk;
 					break;
-	
+
+				case 7:	
 				case 5:		// ダンス
 				case 6:
 					action = Random.Range(2,7);
 					m_anim.SetInteger("DanceType", action);
-					m_anim.SetTrigger("nowDance");
 
 					m_busy_flg = true;
 					m_state = MODEL_STATE.dance;
 					break;
 
-				case 7:		// 特殊1: 相手を見つけて合言葉&ポーズ
-				case 8:
+
+				case 8:		// 特殊1: 相手を見つけて合言葉&ポーズ
+				case 9:
 					// レイヤー８の"model"にだけレイキャストする
 					int layerMask = 1 << 8;
 					// 判定 対象を一人だけ見つける
@@ -132,17 +134,6 @@ public class Model : MonoBehaviour {
 							m_state = MODEL_STATE.special;
 						}
 					}
-					// 近づく
-					// アニメーション開始
-					break;
-				case 9:		// 特殊2: みんなでダンス
-				case 0:
-					// 判定 相手を見つける範囲攻撃
-					// 整列
-					// ダンスを決める
-					// ダンス開始
-
-
 					break;
 				}
 			break;
@@ -175,7 +166,7 @@ public class Model : MonoBehaviour {
 				// モデルのステータスを取得
 				m_animState = m_anim.GetCurrentAnimatorStateInfo(0);		// ダンスの切り替え
 				if(m_animState.nameHash == Animator.StringToHash("Base Layer.EndCheck")){
-					m_anim.SetTrigger("EndCheck");
+					//m_anim.SetTrigger("EndCheck");
 					ActInit();
 				}
 				break;
@@ -198,7 +189,8 @@ public class Model : MonoBehaviour {
 				// モデルのステータスを取得
 				m_animState = m_anim.GetCurrentAnimatorStateInfo(0);		// ダンスの切り替え
 				if(m_animState.nameHash == Animator.StringToHash("Base Layer.EndCheck")){
-					m_anim.SetTrigger("EndCheck");
+					//m_anim.SetTrigger("EndCheck");
+					Debug.Log("ポーズ&合言葉");
 					ActInit();
 					m_friendScript.ActInit();
 				}

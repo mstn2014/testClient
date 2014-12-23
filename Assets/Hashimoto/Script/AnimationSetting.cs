@@ -7,6 +7,7 @@ public class AnimationSetting : MonoBehaviour {
 	private GameObject	m_model;
 	private GameObject	m_Rank;
 	private GameObject	m_panel;
+	private TownManager m_townMgr;
 	private RankingData	m_RankData;
 
 	private List<GameObject>	ModelS;	// 生成するモデルを格納するためのリスト
@@ -36,14 +37,10 @@ public class AnimationSetting : MonoBehaviour {
 		ModelS.Add (Resources.Load("Model/RankModel2") as GameObject);
 		ModelS.Add (Resources.Load("Model/RankModel3") as GameObject);
 		ModelS.Add (Resources.Load("Model/RankModel4") as GameObject);
-		ModelS.Add (Resources.Load("Model/RankModel5") as GameObject);
-		ModelS.Add (Resources.Load("Model/RankModel6") as GameObject);
-		ModelS.Add (Resources.Load("Model/RankModel7") as GameObject);
-		ModelS.Add (Resources.Load("Model/RankModel8") as GameObject);
-		ModelS.Add (Resources.Load("Model/RankModel9") as GameObject);
 
 		m_Rank = Resources.Load ("Prefab/Rank") as GameObject;
 		m_panel = GameObject.Find ("Panel");
+		m_townMgr = GetComponent<TownManager> ();
 		GameObject obj = GameObject.Find ("RankingData");
 		m_RankData = obj.GetComponent<RankingData>();
 
@@ -56,6 +53,7 @@ public class AnimationSetting : MonoBehaviour {
 		UILabel work_label;
 		Camera	camera;
 		Model	modelScript;
+		Rank_ver2 infoScript;
 
 		length.x = (end_farZ.x - start_nearZ.x);	// 幅(横)
 		length.y = (end_farZ.z - start_nearZ.z);	// 幅(縦)
@@ -66,7 +64,7 @@ public class AnimationSetting : MonoBehaviour {
 		for (i=0; i<RANKING.MODEL_NUM; i++) {
 			// 生成するキャラのランキングを取得
 			rank_num = m_RankData.IsRankingNum;
-			if (rank_num == 0)	return;
+			if (rank_num == 0)	return;								// データがない場合終了
 			select_num = Random.Range (0, rank_num);
 			work_box = m_RankData.getRankData (select_num);			// データの取り出し
 			disp_num = m_RankData.getRankingNum(select_num);		// 順位の取り出し
@@ -74,15 +72,16 @@ public class AnimationSetting : MonoBehaviour {
 			m_RankData.DeleteRankingNum(select_num);				// 取り出した順位の削除
 			m_RankData.IsRankingNum = (rank_num-1);					// 消した分の添え字を下げる
 
-
-			//work_model = Instantiate (m_model) as GameObject;		// モデルとランク表示の生成
-			work_model = Instantiate (ModelS[(int)work_box.costume]) as GameObject;	// モデルとランク表示の生成
+			// モデルの生成
+			work_model = Instantiate (ModelS[(int)work_box.costume]) as GameObject;
+			// 生成したモデルの格納
+			m_townMgr.AddModel(work_model);
 
 			////// モデルの設定 //////
 			// 配置する座標を決める
 			work_pos = work_model.transform.localPosition;
 			work_pos.x = start_nearZ.x + (length.x/RANKING.BLOCK_NUM*create_point)+
-										((length.x/RANKING.BLOCK_NUM)/(RANKING.MODEL_NUM/RANKING.BLOCK_NUM)*create_round);	// ToDo:等間隔に置いてるだけ
+										((length.x/RANKING.BLOCK_NUM)/(RANKING.MODEL_NUM/RANKING.BLOCK_NUM)*create_round);
 			create_point++;
 			if(create_point>=RANKING.BLOCK_NUM){
 				create_point = 0;
@@ -90,12 +89,12 @@ public class AnimationSetting : MonoBehaviour {
 			}
 			work_pos.y = RANKING.MODELPOS_Y;
 			work_pos.z = start_nearZ.z + (Random.Range(0f, (length.y)));
-			if(i==1)work_pos.z = end_farZ.z;
 			work_model.transform.position = work_pos;
 
-			modelScript = work_model.GetComponent<Model>();
-
 			// スクリプトの起動
+			modelScript = work_model.GetComponent<Model>();
+			infoScript = work_model.transform.FindChild("LabelPos").gameObject.GetComponent<Rank_ver2>();
+			infoScript.SetInfo(disp_num.ToString()+"位 "+work_box.name.ToString());
 			modelScript.Init(start_nearZ, end_farZ, length);
 
 		}

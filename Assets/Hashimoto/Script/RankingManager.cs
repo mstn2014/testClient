@@ -6,6 +6,7 @@ public class RankingManager : MonoBehaviour {
 
 	getRequestAndroid getreq;
 	RankingData m_RankData;
+	FadeMgr		m_fade;
 
 	bool	m_move_flg;
 	private GameObject ranker;
@@ -26,6 +27,7 @@ public class RankingManager : MonoBehaviour {
 		RANKING = Resources.Load<RankingSetting> ("Setting/RankingSetting");
 		ranker = Resources.Load ("Prefab/Ranking") as GameObject;
 		higerranker = Resources.Load ("Prefab/HigerRanking") as GameObject;
+		m_fade = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel/Fade").GetComponent<FadeMgr>();
 		getreq = GameObject.Find("/getRequestObject").GetComponent<getRequestAndroid>();
 		GameObject obj = GameObject.Find ("RankingData");
 		m_RankData = obj.GetComponent<RankingData>();
@@ -33,10 +35,16 @@ public class RankingManager : MonoBehaviour {
 		m_rankPosY = RANKING.MoziInitPosY;
 		scaleNum = new Vector3(RANKING.MoziScall,RANKING.MoziScall,RANKING.MoziScall);	
 		m_move_flg = false;
+
+		m_fade.Fadein ();
 	}
 
 	// Update is called once per frame
-	void Update () {}
+	void Update () {
+		if (m_fade.IsEndFadeOut) {
+			Application.LoadLevel("RankingAvatarTown");		
+		}
+	}
 
 	// ランキング追加
 	public void DataSet(int num,getRequestAndroid.data_android toShow){
@@ -51,7 +59,7 @@ public class RankingManager : MonoBehaviour {
 	// ランキング表示用の名前生成.
 	private void RankingObjectGeneration(getRequestAndroid.data_android toShow,int num){
 		GameObject ranking;
-		if (num < 10) {
+		if (num < 5) {	// 特殊演出をする数分
 			ranking = (GameObject)GameObject.Instantiate (higerranker, this.transform.position, this.transform.rotation);
 			ranking.GetComponent<HigherRankDisplay> ().Initialize (num);
 		} else {
@@ -66,16 +74,15 @@ public class RankingManager : MonoBehaviour {
 	
 	public void ChangeScene(int num){
 		int rank_num = m_RankData.IsRankingNum;
-		if((rank_num-1) == num){
-
-			Application.LoadLevel("RankingAvatarTown");
+		if((rank_num-1) == num){	// 最後の1人目が消えたら
+			m_fade.Fadeout();
 		}
 	}
 
 
 	public void StartMove(int num){
 		int rank_num = m_RankData.IsRankingNum;
-		if((rank_num-1) == num){
+		if((rank_num-1) == num){	// 最後の1人目が生成されたら
 			m_move_flg = true;
 		}
 	}
