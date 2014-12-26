@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class TownManager : MonoBehaviour {
 	
 	private Camera		m_camera;
+	private int			m_cameraNowPoint;	// カメラの現在のポイント
 	private GameObject	m_ground;
 	private Vector3		m_startPos_nearZ;	// カメラのスタート地点(X座標)とモデル配置のニア(Z座標)
 	private Vector3		m_endPos_farZ;		// カメラのエンド地点(X座標)とモデルの配置のファー(Z座標)
@@ -34,17 +35,20 @@ public class TownManager : MonoBehaviour {
 		m_setAnim = GetComponent<AnimationSetting>();
 
 		//////////////////// ToDo: カメラをスクロールではなく首ふりで
-		// カメラをstart地点とend地点の中心へ
+		// カメラをMOVEPOINT0へ
 		m_startPos_nearZ	= m_ground.transform.FindChild ("StartingPoint_nearZ").transform.position;
 		m_endPos_farZ	= m_ground.transform.FindChild ("EndPoint_farZ").transform.position;
-		Vector3 work_vec = m_camera.transform.position;
-		work_vec.x = m_startPos_nearZ.x + (Mathf.Abs(m_endPos_farZ.x - m_startPos_nearZ.x)/2);
-		m_camera.transform.position = work_vec;
-		//// 時間に変更
+		//Vector3 work_vec = m_camera.transform.position;
+		//work_vec.x = m_startPos_nearZ.x + (Mathf.Abs(m_endPos_farZ.x - m_startPos_nearZ.x)/2);
+		m_camera.transform.position = RANKING.CAMERAMOVELIST[0].pos;
+		m_camera.transform.eulerAngles = RANKING.CAMERAMOVELIST [0].angle;
+		m_cameraNowPoint = 0;
+
+		// 時間をfpsに変更
 		m_townTime = (int)RANKING.TOWN_SECOND * 60;	// 60fpsをかける
 		if (RANKING.TOWN_SECOND <= 0)		Debug.Log ("時間が正しくありません");
 		m_nowcount = 0;
-
+		// 移動できる範囲を求める
 		length.x = m_endPos_farZ.x - m_startPos_nearZ.x;
 		length.y = m_endPos_farZ.z - m_startPos_nearZ.z;
 
@@ -62,6 +66,28 @@ public class TownManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//////////////////// ToDo: カメラをスクロールではなく首ふりで
+		// 一定時間ごとにカメラを移動
+		// count=0のときも移動してしまう
+		if ((m_nowcount % (RANKING.TOWN_SECOND / RANKING.CAMERAMOVECOUNT * 60)) == 0) {
+			int rand = Random.Range(0, RANKING.CAMERAMOVEPOINTNUM);
+			while(m_cameraNowPoint == rand){	// 被り防止
+				rand = Random.Range(0, RANKING.CAMERAMOVEPOINTNUM);
+			}
+			iTween.MoveTo(m_camera.gameObject, iTween.Hash("x",RANKING.CAMERAMOVELIST[rand].pos.x, 
+			                                    "y",RANKING.CAMERAMOVELIST[rand].pos.y,
+			                                    "z",RANKING.CAMERAMOVELIST[rand].pos.z,
+			                                    "time",5f,
+			                                    "easetype",iTween.EaseType.linear));
+			iTween.RotateTo(m_camera.gameObject, iTween.Hash("x",RANKING.CAMERAMOVELIST[rand].angle.x, 
+			                                      "y",RANKING.CAMERAMOVELIST[rand].angle.y,
+			                                      "z",RANKING.CAMERAMOVELIST[rand].angle.z,
+			                                      "time",5f,
+			                                      "easetype",iTween.EaseType.linear));
+
+			m_cameraNowPoint = rand;
+		}
+		/// 
+		/// 
 		///////////////////////////////////////////////////////
 		// 時間が来た時終了
 		if(m_nowcount >= m_townTime){
@@ -99,6 +125,7 @@ public class TownManager : MonoBehaviour {
 					if(set_script.Isbusy == false){
 						Debug.Log("格納");
 						DANCE.Add(set_script);
+						set_script.ActInit();
 						set_script.Isbusy = true;
 						set_script.AnimChenge(dance);
 						set_script.Isstate = Model.MODEL_STATE.ope;
@@ -106,17 +133,13 @@ public class TownManager : MonoBehaviour {
 					}
 
 				}
-
-				// 範囲をsetに決めてif分
-				// MODELSの中で範囲とbusyを見る
-				// 
 			}
 			Debug.Log("ok");
 			m_danceFlg = true;
 		}
 		if (m_danceFlg == true) {
 
-			// みんなのすてーだすを見てendのとき元に戻す	
+			// 最初のステータスを見て
 			AnimatorStateInfo info;
 			Animator anim;
 			anim = DANCE[0].GetComponent(typeof(Animator)) as Animator;
@@ -125,6 +148,8 @@ public class TownManager : MonoBehaviour {
 				for(int i=0; i<dance_num; i++){
 					DANCE[i].ActInit();
 				}
+				DANCE.Clear();
+				DANCE.TrimExcess();
 				m_danceFlg = false;
 
 				Debug.Log("初期化");

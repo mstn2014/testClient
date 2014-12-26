@@ -126,6 +126,7 @@ public class Model : MonoBehaviour {
 							m_navi.SetDestination(access);
 							m_friendScript.NavSet(access);
 							// 状態の変更
+							m_friendScript.ActInit();
 							m_friendScript.Isbusy = true;	// ほかから干渉を受けないように
 							m_busy_flg = true;
 							m_friendScript.AnimChenge(1);	// アニメーションを歩きへ
@@ -140,10 +141,12 @@ public class Model : MonoBehaviour {
 
 			case MODEL_STATE.stand:
 				// アニメーションの割り込み判定
+				/*
 				if(m_busy_flg == true){
 					m_nowCount = 0;
 					break;
 				}
+				*/
 				m_nowCount++;
 				if(m_nowCount > m_animCount){
 					ActInit();
@@ -152,10 +155,12 @@ public class Model : MonoBehaviour {
 
 			case MODEL_STATE.walk:
 				// アニメーションの割り込み判定
+				/*
 				if(m_busy_flg == true){
 					m_nowCount = 0;
 					break;
 				}
+				*/
 				m_nowCount++;
 				if(m_nowCount > m_animCount){
 					ActInit();
@@ -166,7 +171,6 @@ public class Model : MonoBehaviour {
 				// モデルのステータスを取得
 				m_animState = m_anim.GetCurrentAnimatorStateInfo(0);		// ダンスの切り替え
 				if(m_animState.nameHash == Animator.StringToHash("Base Layer.EndCheck")){
-					//m_anim.SetTrigger("EndCheck");
 					ActInit();
 				}
 				break;
@@ -182,15 +186,19 @@ public class Model : MonoBehaviour {
 					m_friendScript.NavStop();
 					m_friendScript.AnimChenge(8);// アニメーションの変更
 					m_anim.SetInteger("DanceType", 8);
-
-					// ここでポーズのアニメーション
-					// 終わったら
 				}
 				// モデルのステータスを取得
 				m_animState = m_anim.GetCurrentAnimatorStateInfo(0);		// ダンスの切り替え
 				if(m_animState.nameHash == Animator.StringToHash("Base Layer.EndCheck")){
 					//m_anim.SetTrigger("EndCheck");
 					Debug.Log("ポーズ&合言葉");
+					ActInit();
+					m_friendScript.ActInit();
+				}
+				// タイムアウト処理
+				m_nowCount++;
+				if(m_nowCount > RANKING.MAX_ANIM_SECOND){
+					// タイムアウト
 					ActInit();
 					m_friendScript.ActInit();
 				}
@@ -209,6 +217,7 @@ public class Model : MonoBehaviour {
 	public void ActInit(){
 		m_navi.Stop();
 		m_nowCount = 0;
+		m_anim.SetTrigger("stay");
 		m_anim.SetInteger("DanceType",0);
 		m_busy_flg = false;
 		m_state = MODEL_STATE.set;

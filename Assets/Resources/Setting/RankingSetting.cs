@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class RankingSetting : ScriptableObject {
+	// カメラの状態
+	[System.Serializable]
+	public class Camera_Condition
+	{
+		public Vector3 pos;
+		public Vector3 angle;
+	}
 
 	[Header("ランキング文字関連")]
 	public float	HideLine;
@@ -35,4 +42,7 @@ public class RankingSetting : ScriptableObject {
 	public float	DANCEEVENT_PROBABILITY;	// みんなでダンスの確率
 	public float	DANCERANGE_X;	// みんなでダンスの距離X
 	public float	DANCERANGE_Z;	// みんなでダンスの距離Z
+	public int		CAMERAMOVECOUNT;// カメラの移動回数
+	public List<RankingSetting.Camera_Condition>	CAMERAMOVELIST;	// カメラが移動する場所
+	public int		CAMERAMOVEPOINTNUM;								// カメラの移動ポイント数
 }
