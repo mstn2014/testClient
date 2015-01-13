@@ -22,6 +22,9 @@ public class getRequestAndroid : MonoBehaviour {
     //public string ipaddr;       // インスペクター上で設定すること
     int startNum = 0;           // ランキングの初期値
     data_android[] dt;
+    bool isGet;
+    float nowTime;
+    int ReqCnt;
 
     int xpos = 200;
 
@@ -38,7 +41,9 @@ public class getRequestAndroid : MonoBehaviour {
 
         rm = GameObject.Find("/UI Root (2D)/Camera/Anchor/Panel").GetComponent<RankingManager>();
         datasend_flg = false;
-
+        isGet = false;
+        nowTime = 0.0f;
+        ReqCnt = 0;
     }
 
     // Update is called once per frame
@@ -56,10 +61,35 @@ public class getRequestAndroid : MonoBehaviour {
         }
 
         int count = (containerList.Count - startNum) > 20 ? 20 : (containerList.Count - startNum);*/
-        startNum = 0;
-        int count = containerList.Count;
-        dt = new data_android[count];
-        containerList.CopyTo(startNum, dt, 0, count);
+        if (!isGet)
+        {
+
+            if (nowTime >= 3.0f)
+            {
+                getMessage();
+                Debug.Log("Getリクエスト送信");
+                nowTime = 0.0f;
+                ReqCnt++;
+            }
+            else
+            {
+                nowTime += Time.deltaTime;
+            }
+        }
+
+        
+        //if (containerList.Count != 0)
+        {
+            startNum = 0;
+            int count = containerList.Count;
+            dt = new data_android[count];
+            containerList.CopyTo(startNum, dt, 0, count);
+        }
+
+        if (ReqCnt > 3)
+        {
+            Application.LoadLevel(0);
+        }
     }
 
     //--------------------------------------------------------
@@ -92,7 +122,7 @@ public class getRequestAndroid : MonoBehaviour {
             containerList.Add(data1);
             i++;
         }
-        
+        isGet = true;
     }
 
     void ReceiveError()

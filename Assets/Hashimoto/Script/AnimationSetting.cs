@@ -94,7 +94,7 @@ public class AnimationSetting : MonoBehaviour {
 			// スクリプトの起動
 			modelScript = work_model.GetComponent<Model>();
 			infoScript = work_model.transform.FindChild("LabelPos").gameObject.GetComponent<Rank_ver2>();
-			infoScript.SetInfo(disp_num.ToString()+"位 "+work_box.name.ToString());
+			infoScript.SetInfo(disp_num.ToString()+"位 "+work_box.name.ToString(),(int)work_box.costume);
 			modelScript.Init(start_nearZ, end_farZ, length);
 
 		}
